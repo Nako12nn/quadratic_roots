@@ -2,7 +2,7 @@
 #include <math.h>
 #include <complex.h>
 
-#define EPSILON 0.000000001
+#define EPSILON 0.0000001
 
 double get_discriminant(double a, double b, double c) 
 {
@@ -12,7 +12,7 @@ double get_discriminant(double a, double b, double c)
 
 void get_root(double discriminant, double a, double b, double* first_root, double* second_root) 
 {
-    double sqrt_d = sqrt(discriminant);// sqrt is very heavy/slow so better to make a new variable
+    double sqrt_d = sqrt(discriminant);// don't use it twice or more, cause it's very heavy
 
     *first_root = (-b - sqrt_d) / (2 * a) + 0.0; // if result is -0.0 then +0.0 switch the sign to plus
     *second_root = (-b + sqrt_d) / (2 * a) + 0.0;
@@ -41,13 +41,14 @@ int main() {
     double a = 0.0; 
     double b = 0.0; 
     double c = 0.0;
+    char ch;
 
     if(scanf("%lf", &a) != 1) {
         printf("Incorrect input\n");
         return 1;
     }
 
-    if(a == 0.0) {
+    if(fabs(a) < EPSILON ) {
         printf("a must not be 0\n");
         return 1;
     }
@@ -61,6 +62,7 @@ int main() {
         printf("Incorrect input\n");
         return 1;
     }
+    while(getchar() && ch != '\n'); // clean buffer
 
     double discriminant = get_discriminant(a, b, c);
     if(discriminant < -EPSILON) {
