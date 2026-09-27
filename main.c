@@ -71,8 +71,6 @@ int main() {
     while((ch = getchar()) && ch != '\n' && ch != EOF); // clean buffer
 
     double discriminant = get_discriminant(a, b, c);
-    double relative_epsilon;
-
 
     if(discriminant < -EPSILON) {
         double complex complex_disc = get_complex_discriminant(discriminant);
