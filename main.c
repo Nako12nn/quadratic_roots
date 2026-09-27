@@ -31,6 +31,12 @@ void get_complex_root(double complex complx_disc, double a, double b, double com
     *second_root = (-b + complx_disc) / (2 * a) + 0.0;
 }
 
+double get_relative_epsilon(double a, double b, double c) 
+{
+    double sum = b * b + 4 * a * c;
+    double relative_epsilon = fabs(sum);
+}
+
 
 
 int main() {
@@ -41,7 +47,7 @@ int main() {
     double a = 0.0; 
     double b = 0.0; 
     double c = 0.0;
-    char ch;
+    int ch; // for buff cleaning
 
     if(scanf("%lf", &a) != 1) {
         printf("Incorrect input\n");
@@ -62,9 +68,12 @@ int main() {
         printf("Incorrect input\n");
         return 1;
     }
-    while(getchar() && ch != '\n'); // clean buffer
+    while((ch = getchar()) && ch != '\n' && ch != EOF); // clean buffer
 
     double discriminant = get_discriminant(a, b, c);
+    double relative_epsilon;
+
+
     if(discriminant < -EPSILON) {
         double complex complex_disc = get_complex_discriminant(discriminant);
         double complex first_complx_root = 0.0;
@@ -74,20 +83,18 @@ int main() {
         printf("Complex root Z1 = %.2f %+.2fi\n", creal(first_complx_root), cimag(first_complx_root));
         printf("Complex root Z2 = %.2f %+.2fi\n", creal(second_complx_root), cimag(second_complx_root));
     }                                // + forces to print the sign of num
-    else if(fabs(discriminant) < EPSILON) {
-        double first_root = 0.0;
-        double second_root = 0.0;
-
-        get_root(discriminant, a, b, &first_root, &second_root);
-        printf("There is only one root: %.2f\n", first_root);
-    }
     else {
         double first_root = 0.0;
         double second_root = 0.0;
+        get_root(discriminant, a, b, &first_root, &second_root);
 
-        get_root(discriminant, a, b, &first_root, &second_root);    
-        printf("X1 = %.2f\nX2 = %.2f\n", first_root, second_root);
+        if(fabs(discriminant) < EPSILON) {
+        printf("There is only one root: %.2f\n", first_root);
+        }
+        else {   
+            printf("X1 = %.2f\nX2 = %.2f\n", first_root, second_root);
+        }
     }
-    
+
     return 0;
 }
